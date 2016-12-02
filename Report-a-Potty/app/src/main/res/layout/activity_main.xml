@@ -1,0 +1,74 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:id = "@+id/activity_main"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:paddingBottom = "@dimen/activity_vertical_margin"
+    android:paddingLeft = "@dimen/activity_horizontal_margin"
+    android:paddingRight = "@dimen/activity_horizontal_margin"
+    android:paddingTop = "@dimen/activity_vertical_margin"
+    android:background = "@color/aesthetic_dark_blue"
+    tools:context = "oops.com.report_a_potty.MainActivity">
+
+    <TextView
+        android:id = "@+id/MainHeader"
+        android:elevation = "3dp"
+        android:text = "@string/MainHeaderString"
+        android:textSize = "25sp"
+        android:textColor="@color/black"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:textAppearance = "@style/TextAppearance.AppCompat.Display1"
+        android:layout_alignParentTop = "true"
+        android:layout_alignParentStart = "true" />
+
+
+    <TextView
+        android:id = "@+id/textOR"
+        android:elevation="3dp"
+        android:text = "@string/textORString"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:textAppearance = "@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_marginBottom = "34dp"
+        android:layout_above = "@+id/buttonEnterAddress"
+        android:layout_centerHorizontal = "true" />
+
+    <Button
+        android:id = "@+id/buttonGPS"
+        android:text = "@string/GPSPrompt"
+        android:textColor = "@color/champagne_yellow"
+        android:elevation = "3dp"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginBottom = "36dp"
+        android:layout_above = "@+id/textOR"
+        android:layout_centerHorizontal = "true" />
+
+    <Button
+        android:id = "@+id/buttonEnterAddress"
+        android:text = "@string/EnterAddressPrompt"
+        android:elevation = "3dp"
+        android:textColor = "@color/champagne_yellow"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginBottom = "96dp"
+        android:layout_alignParentBottom = "true"
+        android:layout_centerHorizontal = "true" />
+
+    <ImageView
+        android:id = "@+id/imageView"
+        android:src = "@drawable/background1"
+        android:elevation = "0dp"
+        android:layout_width = "fill_parent"
+        android:layout_height = "wrap_content"
+        android:scaleType = "fitXY"
+        android:adjustViewBounds = "true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

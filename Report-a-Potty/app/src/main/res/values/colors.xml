@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name = "colorPrimary">#555555</color>
+    <color name = "colorPrimaryDark">#000000</color>
+    <color name = "colorAccent">#FF4081</color>
+
+    <color name = "black">#000000</color>
+    <color name = "white">#ffffff</color>
+    <color name = "dark_grey">#202020</color>
+    <color name = "light_grey">#555555</color>
+    <color name = "dark_purple">#865575</color>
+    <color name = "champagne_yellow">#f9d39a</color>
+    <color name = "dark_ocean_blue">#4c94e6</color>
+    <color name = "light_ocean_blue">#97d8ea</color>
+    <color name = "blood_red">#f63249</color>
+    <color name = "orange">#fc9354</color>
+    <color name = "mint_green">#7ad19c</color>
+    <color name = "teal">#4cc2a1</color>
+    <color name = "mint_blue">#7ad1b9</color>
+    <color name = "cool_blue">#7ad1d0</color>
+    <color name = "aesthetic_dark_blue">#006699</color>
+</resources>
