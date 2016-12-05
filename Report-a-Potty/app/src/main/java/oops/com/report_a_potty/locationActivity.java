@@ -64,12 +64,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-
-
-    // this is a comment added by vijay
+    
     // we make a wrapper function for getting the geocoded LatLng from the string address
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
