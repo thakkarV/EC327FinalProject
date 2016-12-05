@@ -69,6 +69,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
 
 
+    // this is a comment added by vijay
     // we make a wrapper function for getting the geocoded LatLng from the string address
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
