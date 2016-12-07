@@ -44,7 +44,7 @@ public class enterAddressActivity extends AppCompatActivity
         });
     }
 
-    // Called when go button is pressed or the keyboard enter key is pressed
+    // Called when go button is pressed or the keyboard enter key is pressed. Go to location activity.
     public void sendMessage(View v, EditText addressInputBox)
     {
         Intent intent = new Intent(this, locationActivity.class);

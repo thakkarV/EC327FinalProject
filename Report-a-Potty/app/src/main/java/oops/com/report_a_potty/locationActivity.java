@@ -16,10 +16,6 @@ import android.location.Geocoder;
 import java.util.List;
 import java.util.Locale;
 
-
-
-
-
 public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -35,7 +31,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -49,24 +44,44 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
-        // we make the map variable first
+        // Create the map variable
         mMap = googleMap;
 
-        // first we get the string address from the enter address activity
+        // Get the string address from the enter address box, if it exists, and the button code
         Intent intent = getIntent();
         final String currentStringAddress = intent.getStringExtra(enterAddressActivity.EXTRA_MESSAGE);
 
-        // now use geocoder to get the LatLng
-        LatLng currentLatLngAddress = getCoordinatesFromAddress(Context.CONTEXT_IGNORE_SECURITY, currentStringAddress);
+        // !! RACHEL'S CHANGES BEGIN 12/7/2016
+        // declare the button code, as received from the MainActivity
+        final char buttonCode = MainActivity.buttonCode;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Using the geocoder to get the LatLng. Keeping in mind, the current string address may be nothing...
+        // This is where it gets messy. I had to pass the string to the buttonDecision since I'm not sure how to deal
+        // with the intent.
+        Context appCont = getApplicationContext();
+        LatLng currentLatLngAddress = buttonDecision(buttonCode, appCont, currentStringAddress);
+
+        // Add a marker at your location and move the camera to that location
+        mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
     }
 
+    public LatLng buttonDecision(char buttonCode, Context appCont, String currentStringAddress) {
+        if (buttonCode == 'A') {
+            // Get the coordinates from the string entered in the enter address activity
+            LatLng currentLatLngAddress = getCoordinatesFromAddress(appCont, currentStringAddress);
+            return currentLatLngAddress;
+        //} else {
+            // Pass to GPS function (not written yet)
+            //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
+            //return currentLatLngAddress;
+        }
+        // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
+        LatLng sydney = new LatLng(-34,151);
+        return sydney;
+    }
     
-    // we make a wrapper function for getting the geocoded LatLng from the string address
+    // Creating a wrapper function for getting the geocoded LatLng from the string address, if it exists
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
@@ -81,7 +96,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 Address address = geocoderResults.get(0);
                 outputLatLng = new LatLng(address.getLatitude(),address.getLongitude());
             }
-        } // look for any excpetions
+        } // look for any exceptions
         catch (Exception except) {
             System.out.print(except.getMessage());
         }
