@@ -55,7 +55,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         Intent intent = getIntent();
         final String currentStringAddress = intent.getStringExtra(enterAddressActivity.EXTRA_MESSAGE);
 
-        // !! RACHEL'S CHANGES BEGIN 12/7/2016
         // declare the button code, as received from the MainActivity
         final char buttonCode = MainActivity.buttonCode;
 
@@ -68,7 +67,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-        //mMap.moveCamera(CameraUpdateFactory.zoomIn());
+        //mMap.moveCamera(CameraUpdateFactory.zoomIn()); No, Vijay. No.
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
