@@ -74,17 +74,17 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             // Get the coordinates from the string entered in the enter address activity
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
-        } else if (buttonCode == 'G') {
+        } else { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager);
             // Pass to GPS function (not written yet)
             //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
             //return currentLatLngAddress;
+            // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
+            LatLng sydney = new LatLng(-34, 151);
+            return sydney;
         }
-        // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
-        LatLng sydney = new LatLng(-34, 151);
-        return sydney;
     }
 
     // Creating a wrapper function for getting the geocoded LatLng from the string address, if it exists

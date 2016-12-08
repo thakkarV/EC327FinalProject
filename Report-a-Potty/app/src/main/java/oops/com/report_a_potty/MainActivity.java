@@ -13,7 +13,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     // Set default button code to GPS
-    public static char buttonCode = ' ';
+    public static char buttonCode = 'G';
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
