@@ -57,7 +57,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         Intent intent = getIntent();
         final String currentStringAddress = intent.getStringExtra(enterAddressActivity.EXTRA_MESSAGE);
 
-        // !! RACHEL'S CHANGES BEGIN 12/7/2016
         // declare the button code, as received from the MainActivity
         final char buttonCode = MainActivity.buttonCode;
 
@@ -70,7 +69,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-        mMap.moveCamera(CameraUpdateFactory.zoomIn());
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
@@ -81,7 +79,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         } else {
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            checkGPSStatus(locationManager, appContext);
+            checkGPSStatus(locationManager);
             // Pass to GPS function (not written yet)
             //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
             //return currentLatLngAddress;
@@ -95,7 +93,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
-        List< Address > geocoderResults = null;
+        List< Address > geocoderResults;
         try {
             // get results form geocoder first
             geocoderResults = geocoder.getFromLocationName(addressString, 1);
@@ -124,7 +122,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
     // user might have location services disabled so we first check for that
     // first we get the location manager
-    public void checkGPSStatus(LocationManager locationManager, Context appContext){
+    public void checkGPSStatus(LocationManager locationManager){
         if (! locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             alertNoGPS();
         }
