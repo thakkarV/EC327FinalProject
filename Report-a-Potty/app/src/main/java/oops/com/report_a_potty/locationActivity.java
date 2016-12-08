@@ -27,8 +27,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleMap mMap;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -48,8 +47,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
      */
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         // Create the map variable
         mMap = googleMap;
 
@@ -70,7 +68,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-        mMap.moveCamera(CameraUpdateFactory.zoomIn());
+        //mMap.moveCamera(CameraUpdateFactory.zoomIn());
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
@@ -78,7 +76,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             // Get the coordinates from the string entered in the enter address activity
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
-        } else {
+        } else if (buttonCode == 'G') {
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager, appContext);
@@ -87,24 +85,24 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             //return currentLatLngAddress;
         }
         // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
-        LatLng sydney = new LatLng(-34,151);
+        LatLng sydney = new LatLng(-34, 151);
         return sydney;
     }
-    
+
     // Creating a wrapper function for getting the geocoded LatLng from the string address, if it exists
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
-        List< Address > geocoderResults = null;
+        List<Address> geocoderResults = null;
         try {
             // get results form geocoder first
             geocoderResults = geocoder.getFromLocationName(addressString, 1);
             int counter = 0;
-            while (geocoderResults.size()==0 && counter < 3) {
+            while (geocoderResults.size() == 0 && counter < 3) {
                 geocoderResults = geocoder.getFromLocationName(addressString, 1);
                 counter++;
             }
-            if (geocoderResults.size()>0) {
+            if (geocoderResults.size() > 0) {
                 Address address = geocoderResults.get(0);
                 outputLatLng = new LatLng(address.getLatitude(), address.getLongitude());
             }
