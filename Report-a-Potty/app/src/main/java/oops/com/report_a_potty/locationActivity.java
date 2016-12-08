@@ -67,10 +67,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-<<<<<<< HEAD
-=======
-        //mMap.moveCamera(CameraUpdateFactory.zoomIn()); No, Vijay. No.
->>>>>>> 62fb59684fd9eed584d9d559b6bbf8607884c69e
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
@@ -95,11 +91,9 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     public LatLng getCoordinatesFromAddress(Context appContext, String addressString) {
         LatLng outputLatLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
-<<<<<<< HEAD
+
         List< Address > geocoderResults;
-=======
-        List<Address> geocoderResults = null;
->>>>>>> 62fb59684fd9eed584d9d559b6bbf8607884c69e
+
         try {
             // get results form geocoder first
             geocoderResults = geocoder.getFromLocationName(addressString, 1);
