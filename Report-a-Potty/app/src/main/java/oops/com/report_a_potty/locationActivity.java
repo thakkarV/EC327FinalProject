@@ -79,11 +79,16 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager);
             // Pass to GPS function (not written yet)
+<<<<<<< HEAD
             //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
             //return currentLatLngAddress;
             // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
             LatLng sydney = new LatLng(-34, 151);
             return sydney;
+=======
+            LatLng currentLatLngAddress = getCoordinatesFromGPS();
+            return currentLatLngAddress;
+>>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
         }
     }
 
@@ -147,4 +152,17 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         final AlertDialog alert = builder.create();
         alert.show();
     }
+<<<<<<< HEAD
 }
+=======
+
+    public LatLng getCoordinatesFromGPS() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = locationManager.GPS_PROVIDER;
+
+        Location lastLoc = locationManager.getLastKnownLocation(locationProvider);
+        LatLng outputLatLng = (lastLoc.getLatitude(), lastLoc.getLongitude());
+        return outputLatLng;
+    }
+}
+>>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
