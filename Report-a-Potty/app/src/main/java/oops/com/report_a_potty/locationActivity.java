@@ -67,7 +67,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-        //mMap.moveCamera(CameraUpdateFactory.zoomIn()); No, Vijay. No.
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
@@ -80,8 +79,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager, appContext);
             // Pass to GPS function (not written yet)
-            //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
-            //return currentLatLngAddress;
+            LatLng currentLatLngAddress = getCoordinatesFromGPS();
+            return currentLatLngAddress;
         }
         // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
         LatLng sydney = new LatLng(-34, 151);
@@ -145,5 +144,14 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public LatLng getCoordinatesFromGPS() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = locationManager.GPS_PROVIDER;
+
+        Location lastLoc = locationManager.getLastKnownLocation(locationProvider);
+        LatLng outputLatLng = (lastLoc.getLatitude(), lastLoc.getLongitude());
+        return outputLatLng;
     }
 }
