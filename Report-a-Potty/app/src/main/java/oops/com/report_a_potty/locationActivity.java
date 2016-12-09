@@ -70,12 +70,28 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager);
             // Pass to GPS function (not written yet)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            //LatLng currentLatLngAddress = getCoordinatesFromGPS();
+            //return currentLatLngAddress;
+=======
+<<<<<<< HEAD
+>>>>>>> a3fd16ba17281fee94b01a8dd239723024aee3d2
             //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
             //return currentLatLngAddress;
             LatLng sydney = new LatLng(-34, 151);
             return sydney;
+<<<<<<< HEAD
             // LatLng currentLatLngAddress = getCoordinatesFromGPS();
             // return currentLatLngAddress;
+=======
+=======
+            LatLng currentLatLngAddress = getCoordinatesFromGPS();
+            return currentLatLngAddress;
+>>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
+>>>>>>> 7000b29070fef553d16e8ef474d76a52ccb040d5
+>>>>>>> a3fd16ba17281fee94b01a8dd239723024aee3d2
         }
     }
 
@@ -142,8 +158,12 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
 }
 
+<<<<<<< HEAD
 /*
     public LatLng getCoordinatesFromGPS() {
+=======
+    /*public LatLng getCoordinatesFromGPS() {
+>>>>>>> a3fd16ba17281fee94b01a8dd239723024aee3d2
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
     try {
@@ -152,8 +172,12 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         LatLng outputLatLng = (lastLoc.getLatitude(), lastLoc.getLongitude());
         return outputLatLng;
     }
+<<<<<<< HEAD
     catch (Exception except) {
 
     }
+=======
+    */
+>>>>>>> a3fd16ba17281fee94b01a8dd239723024aee3d2
 }
 */
