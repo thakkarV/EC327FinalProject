@@ -11,26 +11,44 @@
     android:layout_centerHorizontal="true"
     tools:context="oops.com.report_a_potty.enterAddressActivity">
 
+    <ImageView
+        android:id = "@+id/imageView"
+        android:src = "@drawable/background4"
+        android:elevation = "0dp"
+        android:layout_width = "fill_parent"
+        android:layout_height = "wrap_content"
+        android:scaleType = "fitXY"
+        android:adjustViewBounds = "true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:contentDescription=""
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:text="Go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation = "3dp"
+        android:id="@+id/addressEnter"
+        android:onClick="sendMessage"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="160dp" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="Enter address here"
         android:textAlignment="center"
+        android:textColorHint="@color/black"
+        android:textColor="@color/colorPrimaryDark"
+        android:elevation = "3dp"
         android:ems="10"
-        android:layout_marginTop="114dp"
         android:id="@+id/addressInput"
-        android:layout_below="@+id/addressEnter"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addressEnter"
-        android:onClick="sendMessage"
-        android:layout_marginTop="103dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginBottom="83dp"
+        android:layout_above="@+id/addressEnter"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

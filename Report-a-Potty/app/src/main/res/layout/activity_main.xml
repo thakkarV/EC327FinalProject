@@ -60,22 +60,6 @@
         android:textAllCaps="false"
         android:fontFamily="sans-serif-medium" />
 
-    <Button
-        android:id = "@+id/buttonGPS"
-        android:text = "@string/GPSPrompt"
-        android:elevation = "3dp"
-        android:layout_height = "wrap_content"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        android:textColor="@color/champagne_yellow"
-        android:background="@color/black"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_marginBottom="66dp"
-        android:includeFontPadding="false"
-        android:textSize="18sp"
-        android:layout_above="@+id/textOR"
-        android:layout_width="wrap_content"
-        style="@android:style/Widget.Material" />
-
     <TextView
         android:id = "@+id/textOR"
         android:elevation="5dp"
@@ -90,6 +74,22 @@
         android:fontFamily="serif"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonEnterAddress"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id = "@+id/buttonGPS"
+        android:text = "@string/GPSPrompt"
+        android:elevation = "3dp"
+        android:layout_height = "wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
+        android:textColor="@color/champagne_yellow"
+        android:background="@color/black"
+        android:layout_alignWithParentIfMissing="false"
+        android:includeFontPadding="false"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        style="@android:style/Widget.Material"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
