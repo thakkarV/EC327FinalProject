@@ -74,17 +74,27 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             // Get the coordinates from the string entered in the enter address activity
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
-        } else if (buttonCode == 'G') {
+        } else { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             checkGPSStatus(locationManager);
             // Pass to GPS function (not written yet)
+<<<<<<< HEAD
             //LatLng currentLatLngAddress = getCoordinatesFromGPS();
             //return currentLatLngAddress;
+=======
+<<<<<<< HEAD
+            //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
+            //return currentLatLngAddress;
+            // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
+            LatLng sydney = new LatLng(-34, 151);
+            return sydney;
+=======
+            LatLng currentLatLngAddress = getCoordinatesFromGPS();
+            return currentLatLngAddress;
+>>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
+>>>>>>> 7000b29070fef553d16e8ef474d76a52ccb040d5
         }
-        // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
-        LatLng sydney = new LatLng(-34, 151);
-        return sydney;
     }
 
     // Creating a wrapper function for getting the geocoded LatLng from the string address, if it exists
@@ -147,6 +157,9 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         final AlertDialog alert = builder.create();
         alert.show();
     }
+<<<<<<< HEAD
+}
+=======
 
     /*public LatLng getCoordinatesFromGPS() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -158,3 +171,4 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     }
     */
 }
+>>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
