@@ -43,7 +43,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/buttonGPS"
         android:layout_alignStart="@+id/buttonGPS"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:width="300dp"/>
 
     <TextView
         android:text="@string/report_a_potty"
@@ -90,6 +91,7 @@
         android:layout_width="wrap_content"
         style="@android:style/Widget.Material"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:width="300dp"/>
 
 </RelativeLayout>
