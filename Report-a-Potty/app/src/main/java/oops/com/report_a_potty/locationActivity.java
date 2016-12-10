@@ -1,13 +1,20 @@
 package oops.com.report_a_potty;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
+import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.os.Build.*;
+
+//import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,6 +28,8 @@ import android.support.v7.app.AlertDialog;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -69,7 +78,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
     }
 
-    public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {
+    public LatLng buttonDecision(char buttonCode, final Context appContext, String currentStringAddress) {
         if (buttonCode == 'A') {
             // Get the coordinates from the string entered in the enter address activity
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
@@ -77,23 +86,11 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         } else { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE); ?
             checkGPSStatus(locationManager);
-            // Pass to GPS function (not written yet)
-<<<<<<< HEAD
-            //LatLng currentLatLngAddress = getCoordinatesFromGPS();
-            //return currentLatLngAddress;
-=======
-<<<<<<< HEAD
-            //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
-            //return currentLatLngAddress;
-            // just so it would compile. When the GPS button is clicked a pin shows up at Sydney.
-            LatLng sydney = new LatLng(-34, 151);
-            return sydney;
-=======
-            LatLng currentLatLngAddress = getCoordinatesFromGPS();
+
+            LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
             return currentLatLngAddress;
->>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
->>>>>>> 7000b29070fef553d16e8ef474d76a52ccb040d5
         }
     }
 
@@ -102,7 +99,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         LatLng outputLatLng = null;
         Geocoder geocoder = new Geocoder(appContext, Locale.getDefault());
 
-        List< Address > geocoderResults;
+        List<Address> geocoderResults;
 
         try {
             // get results form geocoder first
@@ -132,8 +129,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
     // user might have location services disabled so we first check for that
     // first we get the location manager
-    public void checkGPSStatus(LocationManager locationManager){
-        if (! locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+    public void checkGPSStatus(LocationManager locationManager) {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             alertNoGPS();
         }
     }
@@ -145,30 +142,58 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                            dialog.cancel();
+                        dialog.cancel();
                     }
                 });
         final AlertDialog alert = builder.create();
         alert.show();
     }
-<<<<<<< HEAD
-}
-=======
 
-    /*public LatLng getCoordinatesFromGPS() {
+    public LocationListener listener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            Context appContext = getApplicationContext();
+            LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
+            System.out.print(currentLatLngAddress);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
+
+    public LatLng getCoordinatesFromGPS(Context appCont) {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = locationManager.GPS_PROVIDER;
+        String locationProvider = LocationManager.GPS_PROVIDER;
 
-        Location lastLoc = locationManager.getLastKnownLocation(locationProvider);
-        LatLng outputLatLng = (lastLoc.getLatitude(), lastLoc.getLongitude());
-        return outputLatLng;
+        // Permission check - required by Android *cue eye roll*
+        if (SDK_INT >= 23 && ContextCompat.checkSelfPermission(appCont, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            boolean permiss = true;
+
+            if (permiss) {
+                //requestLocationUpdates(provider, min time, min distance, location listener)
+                locationManager.requestLocationUpdates(locationProvider, 4000L, 0f, listener);
+            }
+
+            if (locationManager != null) {
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                LatLng currentCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
+                return currentCoordinates;
+            }
+        }
+
+        LatLng sydney = new LatLng(0,0);
+        return sydney;
     }
-    */
 }
->>>>>>> 1aeea3ff8069d4790b6d941d02872680a7073cba
