@@ -8,6 +8,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,6 +59,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
     }
 
     public LatLng buttonDecision(char buttonCode, Context appContext, String currentStringAddress) {

@@ -92,6 +92,6 @@
         style="@android:style/Widget.Material"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:width="300dp"/>
+        android:width="300dp" />
 
 </RelativeLayout>
