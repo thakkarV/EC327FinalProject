@@ -12,9 +12,14 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.os.Build.*;
 
 //import com.google.android.gms.location.LocationListener;
+=======
+
+import com.google.android.gms.maps.CameraUpdate;
+>>>>>>> 2d075b0d6f18616ea97d53ee1f0570063ac6d5c8
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,16 +50,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // Create the map variable
@@ -76,6 +71,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
     }
 
     public LatLng buttonDecision(char buttonCode, final Context appContext, String currentStringAddress) {
@@ -83,14 +79,25 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             // Get the coordinates from the string entered in the enter address activity
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
-        } else { // buttonCode == 'G'
+        }
+        else
+        { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             //LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE); ?
             checkGPSStatus(locationManager);
+<<<<<<< HEAD
 
             LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
             return currentLatLngAddress;
+=======
+            // Pass to GPS function (not written yet)
+
+            //LatLng currentLatLngAddress = getCoordinatesFromGPS(appCont, currentStringAddress);
+            //return currentLatLngAddress;
+            LatLng sydney = new LatLng(-34, 151);
+            return sydney;
+>>>>>>> 2d075b0d6f18616ea97d53ee1f0570063ac6d5c8
         }
     }
 
@@ -104,10 +111,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         try {
             // get results form geocoder first
             geocoderResults = geocoder.getFromLocationName(addressString, 1);
-            int counter = 0;
-            while (geocoderResults.size() == 0 && counter < 3) {
+            while (geocoderResults.size() == 0) {
                 geocoderResults = geocoder.getFromLocationName(addressString, 1);
-                counter++;
             }
             if (geocoderResults.size() > 0) {
                 Address address = geocoderResults.get(0);
@@ -154,6 +159,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         final AlertDialog alert = builder.create();
         alert.show();
     }
+<<<<<<< HEAD
 
     public LocationListener listener = new LocationListener() {
         public void onLocationChanged(Location location) {
@@ -176,6 +182,19 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     public LatLng getCoordinatesFromGPS(Context appCont) {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
+=======
+}
+
+
+/*
+    public LatLng getCoordinatesFromGPS() {
+
+    /*public LatLng getCoordinatesFromGPS() {
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.GPS_PROVIDER;
+    try {
+>>>>>>> 2d075b0d6f18616ea97d53ee1f0570063ac6d5c8
 
         // Permission check - required by Android *cue eye roll*
         if (SDK_INT >= 23 && ContextCompat.checkSelfPermission(appCont, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -196,4 +215,13 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         LatLng sydney = new LatLng(0,0);
         return sydney;
     }
+<<<<<<< HEAD
 }
+=======
+
+    catch (Exception except) {
+
+    }
+
+    */
+>>>>>>> 2d075b0d6f18616ea97d53ee1f0570063ac6d5c8

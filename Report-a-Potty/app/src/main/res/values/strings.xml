@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Report-a-Potty</string>
-    <string name="MainHeaderString">Where potty dreams become reality</string>
-    <string name="textORString">or</string>
-    <string name="GPSPrompt">Find Restrooms near me</string>
-    <string name="EnterAddressPrompt">Enter Address</string>
-    <string name="title_activity_location">Map</string>
+    <string name = "app_name">Report-a-Potty</string>
+    <string name = "MainHeaderString">Where potty dreams become reality</string>
+    <string name = "textORString">or</string>
+    <string name = "GPSPrompt">Find Restrooms near me</string>
+    <string name = "EnterAddressPrompt">Enter Address</string>
+    <string name = "report_a_potty">Report-A-Potty</string>
 </resources>
