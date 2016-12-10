@@ -12,11 +12,8 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
 
 import com.google.android.gms.maps.CameraUpdate;
->>>>>>> c47f7b9e7612e6de637f7d2e7c37a4d4b7a90e46
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -69,10 +66,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         // Add a marker at your location and move the camera to that location
         Marker youAreHere = mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-<<<<<<< HEAD
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
-=======
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
         // Add all of the markers for all of the public restrooms in our array thing
@@ -87,7 +81,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                     .visible(true);
                     // The info window will show when clicked
          */
->>>>>>> c47f7b9e7612e6de637f7d2e7c37a4d4b7a90e46
     }
 
     public LatLng buttonDecision(char buttonCode, final Context appContext, String currentStringAddress) {
@@ -98,13 +91,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         } else { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE); ?
-            checkGPSStatus(locationManager);
-<<<<<<< HEAD
-            LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
-            return currentLatLngAddress;
-
-=======
 
             // Pass to GPS function
             LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
@@ -112,7 +98,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
             //LatLng sydney = new LatLng(-34, 151); Just in case
             //return sydney;
->>>>>>> c47f7b9e7612e6de637f7d2e7c37a4d4b7a90e46
         }
     }
 
@@ -197,11 +182,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     public LatLng getCoordinatesFromGPS(Context appCont) {
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-<<<<<<< HEAD
-
-    }
-}
-=======
         String locationProvider = LocationManager.GPS_PROVIDER;
         try {
 
@@ -232,4 +212,3 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         return sydney;
     }
 }
->>>>>>> c47f7b9e7612e6de637f7d2e7c37a4d4b7a90e46
