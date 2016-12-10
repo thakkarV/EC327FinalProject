@@ -112,12 +112,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         } else { // buttonCode == 'G'
             // first check if  the GPS is alright to use or not
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-<<<<<<< HEAD
-            checkGPSStatus(locationManager);
-            
-=======
             GetLatLng.checkGPSStatus(locationManager);
->>>>>>> da699c5b69a06517a6a89024b47aba0a94d48b65
             // Pass to GPS function
             LatLng currentLatLngAddress = GetLatLng.getCoordinatesFromGPS(appContext);
             return currentLatLngAddress;
