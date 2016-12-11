@@ -40,6 +40,8 @@ public class GetNearbyPlacesData extends AsyncTask {
         List<HashMap<String, String>> nearbyPlacesList = null;
         jsonDataParser dataParser = new jsonDataParser();
         nearbyPlacesList =  dataParser.parse(result);
+        // this is where we return  the list of the nearby locations
+        // basically modify the ShowNearbyPlaces method such taht it returns the entire hashmap
         ShowNearbyPlaces(nearbyPlacesList);
         Log.d("GooglePlacesReadTask", "onPostExecute Exit");
     }
