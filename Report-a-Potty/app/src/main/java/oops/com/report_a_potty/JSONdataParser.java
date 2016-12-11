@@ -53,13 +53,15 @@ public class jsonDataParser {
     }
 
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson) {
+        // we make a hashmap to store the data from the API endpoint
         HashMap<String, String> googlePlaceMap = new HashMap<String, String>();
         String placeName = "-NA-";
         String vicinity = "-NA-";
-        String latitude = "";
-        String longitude = "";
-        String reference = "";
+        String latitude;
+        String longitude;
+        String reference;
 
+        // now i would try to return LatLng as a LatLng object but the hashmap is a string string type
         Log.d("getPlace", "Entered");
 
         try {
@@ -80,6 +82,7 @@ public class jsonDataParser {
             Log.d("getPlace", "Putting Places");
         } catch (JSONException except) {
             Log.d("getPlace", "Error");
+            // print stack trace in case of exception
             except.printStackTrace();
         }
         return googlePlaceMap;

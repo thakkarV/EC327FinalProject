@@ -14,9 +14,9 @@ import java.net.URL;
  */
 
 
-public class downloadURL {
+class downloadURL {
 
-    public String readURL(String endpointURL) throws IOException {
+    String readURL(String endpointURL) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;

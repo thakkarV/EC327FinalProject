@@ -54,14 +54,13 @@ public class GetNearbyPlacesData extends AsyncTask {
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
             LatLng latLng = new LatLng(lat, lng);
-            markerOptions.position(latLng);
-            markerOptions.title(placeName + " : " + vicinity);
-            mMap.addMarker(markerOptions);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
             // now we have the data of a lot of difference places of this type
             // all we need to do is to store it
             // churn it through the algorithm we  make
             // and then display the first n results of that list of nearby locations
+            // for example, we could just do
+            //mMap.addMarker(markerOptions); here
         }
     }
 }
