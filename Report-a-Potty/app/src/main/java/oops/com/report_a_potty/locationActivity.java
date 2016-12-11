@@ -2,10 +2,13 @@ package oops.com.report_a_potty;
 
 import android.*;
 import android.Manifest;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -53,9 +58,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -64,32 +66,33 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mMap = googleMap;
         // first check for permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // first check for permissions
+                checkFineLocationPermission();
                 // if granted, start google play services
                 GoogleApiClient locationClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).build();
                 locationClient.connect();
+                // if we have permissions then start location manager
+                final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                // check if GPS is online
+                checkGPSStatus(locationManager);
                 mMap.setMyLocationEnabled(true);
-            }
         } else {
             return;
         }
         mMap.clear();
+                // declare the button code, as received from the MainActivity
+        final char buttonCode = MainActivity.buttonCode;
+        // Get the coordinates from the string entered in the enter address activity
         Context appCont = getApplicationContext();
 
-        // Get the string address from the enter address box, if it exists, and the button code
-        Intent intent = getIntent();
-        final String currentStringAddress = intent.getStringExtra(enterAddressActivity.EXTRA_MESSAGE);
-
-        // declare the button code, as received from the MainActivity
-        final char buttonCode = MainActivity.buttonCode;
-
         // Using the geocoder to get the LatLng. Keeping in mind, the current string address may be nothing...
-        LatLng currentLatLngAddress = buttonDecision(buttonCode, appCont, currentStringAddress);
-
+        LatLng currentLatLngAddress = buttonDecision(buttonCode, appCont);
+        // from here on the code should be inside button decision only since the activity forks into
+        // two separate paths
         // Add a marker at your location and move the camera to that location
         Marker youAreHere = mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
         // Add all of the markers for all of the public restrooms in our array thing
         // Algorithm
@@ -104,16 +107,17 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
          */
     }
 
-    public LatLng buttonDecision(char buttonCode, final Context appContext, String currentStringAddress) {
+    public LatLng buttonDecision(char buttonCode, final Context appContext) {
         if (buttonCode == 'A') {
-            // Get the coordinates from the string entered in the enter address activity
+            // Get the string address from the enter address box, if it exists, and the button code
+            Intent intent = getIntent();
+            final String currentStringAddress = intent.getStringExtra(enterAddressActivity.EXTRA_MESSAGE);
+
+            // Using the geocoder to get the LatLng. Keeping in mind, the current string address may be nothing...
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
         } else { // buttonCode == 'G'
-            // first check if  the GPS is alright to use or not
-            final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            checkGPSStatus(locationManager);
-            // Pass to GPS function
+                       // Pass to GPS function
             LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
             return currentLatLngAddress;
         }
@@ -229,5 +233,63 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
         LatLng sydney = new LatLng(0, 0);
         return sydney;
+    }
+
+    private final int LOCATION_PERMISSION_CODE = 12;
+    private boolean checkFineLocationPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Asking user if explanation is needed
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+
+                //Prompt the user once explanation has been shown
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_CODE);
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_CODE);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_PERMISSION_CODE: {
+                // arrays are empty if the request was cancelled
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // granted permission
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // buildGoogleApiClient();
+                    }
+                    mMap.setMyLocationEnabled(true);
+
+
+                } else {
+
+                    // Permission denied, Disable the functionality that depends on this permission
+                }
+            }
+
+            // other 'case' lines to check for other permissions this app might request.
+            //You can add here other case statements according to your requirement.
+        }
     }
 }
