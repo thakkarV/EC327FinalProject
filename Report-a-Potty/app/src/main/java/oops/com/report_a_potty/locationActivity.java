@@ -17,6 +17,7 @@ import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,6 +36,8 @@ import android.support.v7.app.AlertDialog;
 
 import java.util.List;
 import java.util.Locale;
+import java.net.URL;
+import java.net.URLConnection;
 
 import static android.os.Build.VERSION.SDK_INT;
 
@@ -97,7 +100,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
         // now get and display all the possible restrooms nearby
-        //getRestrooms(currentLatLngAddress);
+        getRestrooms(currentLatLngAddress);
 
         // Add all of the markers for all of the public restrooms in our array thing
         // Algorithm
@@ -313,10 +316,12 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .build();
         locationClient.connect();
     }
-    /*
-    private void getRestrooms(LatLng currentLocation){
 
+    private void getRestrooms(LatLng currentLocation){
+        // String url = ;
+        Object[] shuttleData = new Object[2];
+        shuttleData[0] = mMap;
+        shuttleData[1] = url;
     }
-    */
 }
 
