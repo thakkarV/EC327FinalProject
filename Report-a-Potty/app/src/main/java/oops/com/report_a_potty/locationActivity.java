@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.net.Uri;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,6 +35,10 @@ import com.google.android.gms.maps.model.Marker;
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
 
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 import java.net.URL;
@@ -317,11 +322,45 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         locationClient.connect();
     }
 
+
     private void getRestrooms(LatLng currentLocation){
-        // String url = ;
-        Object[] shuttleData = new Object[2];
-        shuttleData[0] = mMap;
-        shuttleData[1] = url;
+        for (int i = 0; i < 4; i++)
+        {
+            URL queryURL = createQueryURL(currentLocation, i);
+            Object[] shuttleData = new Object[2];
+            shuttleData[0] = mMap;
+            shuttleData[1] = queryURL;
+            GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+            getNearbyPlacesData.execute(shuttleData);
+        }
+    }
+
+    final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    final String KEY = "AIzaSyBwLxJ4tll-EQioZgPqw_1WUzyBAlFpPq8";
+    final String RADIUS = "3000"; // in meters
+    final String[] params = {"cafe" , "gas_station" , "shopping_mall" , "department_store"};
+    private URL createQueryURL(LatLng currentLocation, int i){
+
+            Uri builtUri = Uri.parse(BASE_URL);
+            String lat = Double.toString(currentLocation.latitude);
+            String lng = Double.toString(currentLocation.longitude);
+            final String latLngString = lat + "," + lng;
+            builtUri.buildUpon()
+                .appendQueryParameter("key", KEY)
+                .appendQueryParameter("radius", RADIUS)
+                .appendQueryParameter("location", latLngString)
+                .appendQueryParameter("keyword", params[i])
+                .build();
+        try{
+            java.net.URL returnURL = new URL(builtUri.toString());
+            return returnURL;
+        }
+        catch (MalformedURLException except)
+        {
+            except.printStackTrace();
+        }
+        // Must return here
+        return null;
     }
 }
 
