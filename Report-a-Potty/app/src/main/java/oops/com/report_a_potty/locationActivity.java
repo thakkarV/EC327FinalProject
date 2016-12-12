@@ -1,10 +1,7 @@
 package oops.com.report_a_potty;
 
-import android.*;
 import android.Manifest;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -20,26 +17,22 @@ import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode;
+
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,12 +41,19 @@ import static android.os.Build.VERSION.SDK_INT;
 public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        // first check for permissions for GPS location
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkFineLocationPermission();
+        }
+        // then see if the google play API can be used
+        if(!checkPlayServiceAvailability()) {
+            finish();
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -64,35 +64,40 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         // Create the map variable
         mMap = googleMap;
-        // first check for permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // first check for permissions
-                checkFineLocationPermission();
-                // if granted, start google play services
-                GoogleApiClient locationClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).build();
-                locationClient.connect();
-                // if we have permissions then start location manager
-                final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                // check if GPS is online
-                checkGPSStatus(locationManager);
-                mMap.setMyLocationEnabled(true);
-        } else {
-            return;
-        }
         mMap.clear();
-                // declare the button code, as received from the MainActivity
+
+        // first we get the context of the app
+        Context appCont = getApplicationContext();
+        // if granted, start google play services
+        buildGoogleApiClient(appCont);
+
+        // if we have permissions then start location manager
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        checkGPSStatus(locationManager);
+
+        // this function would be used in case our own custom location function does not work
+        // mMap.setMyLocationEnabled(true);
+
+        // declare the button code, as received from the MainActivity
         final char buttonCode = MainActivity.buttonCode;
         // Get the coordinates from the string entered in the enter address activity
-        Context appCont = getApplicationContext();
 
         // Using the geocoder to get the LatLng. Keeping in mind, the current string address may be nothing...
         LatLng currentLatLngAddress = buttonDecision(buttonCode, appCont);
-        // from here on the code should be inside button decision only since the activity forks into
-        // two separate paths
+
         // Add a marker at your location and move the camera to that location
-        Marker youAreHere = mMap.addMarker(new MarkerOptions().position(currentLatLngAddress).title("You Are Here"));
+        mMap
+            .addMarker(new MarkerOptions()
+            .position(currentLatLngAddress)
+            .title("You Are Here")
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+        // move the marker to the user's location and zoom in on their position
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLngAddress));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+
+        // now get and display all the possible restrooms nearby
+        //getRestrooms(currentLatLngAddress);
 
         // Add all of the markers for all of the public restrooms in our array thing
         // Algorithm
@@ -117,7 +122,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             LatLng currentLatLngAddress = getCoordinatesFromAddress(appContext, currentStringAddress);
             return currentLatLngAddress;
         } else { // buttonCode == 'G'
-                       // Pass to GPS function
+            // Pass to GPS function
             LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
             return currentLatLngAddress;
         }
@@ -244,14 +249,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_PERMISSION_CODE);
-
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -292,4 +293,30 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             //You can add here other case statements according to your requirement.
         }
     }
+
+    private boolean checkPlayServiceAvailability() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        if(result != ConnectionResult.SUCCESS) {
+            if(googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(this, result,
+                        0).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    protected synchronized void buildGoogleApiClient(Context appCont) {
+        GoogleApiClient locationClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .build();
+        locationClient.connect();
+    }
+    /*
+    private void getRestrooms(LatLng currentLocation){
+
+    }
+    */
 }
+

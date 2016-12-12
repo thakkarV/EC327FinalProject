@@ -23,7 +23,9 @@ public class jsonDataParser {
 
         try {
             Log.d("Places", "parse");
+            // first we make a json object
             jsonObject = new JSONObject((String) jsonData);
+            // then
             jsonArray = jsonObject.getJSONArray("results");
         } catch (JSONException excpet) {
             Log.d("Places", "parse error");
@@ -71,14 +73,18 @@ public class jsonDataParser {
             if (!googlePlaceJson.isNull("vicinity")) {
                 vicinity = googlePlaceJson.getString("vicinity");
             }
+            // first get all the properties we need
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
             reference = googlePlaceJson.getString("reference");
+
+            // store everything into the hashmap and then return it
             googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);
+
             Log.d("getPlace", "Putting Places");
         } catch (JSONException except) {
             Log.d("getPlace", "Error");
