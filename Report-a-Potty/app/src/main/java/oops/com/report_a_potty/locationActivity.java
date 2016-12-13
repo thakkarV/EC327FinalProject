@@ -13,15 +13,16 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationListener;
+//import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.net.Uri;
 
-
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,9 +47,16 @@ import java.net.URLConnection;
 
 import static android.os.Build.VERSION.SDK_INT;
 
-public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class locationActivity extends FragmentActivity implements OnMapReadyCallback,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener,
+        LocationListener
+{
 
     private GoogleMap mMap;
+    public LocationRequest locationRequest;
+    public GoogleApiClient locationClient;
+    public Location gpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +84,9 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
         // first we get the context of the app
         Context appCont = getApplicationContext();
+
         // if granted, start google play services
-        buildGoogleApiClient(appCont);
+        buildGoogleApiClient();
 
         // if we have permissions then start location manager
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -92,7 +101,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
         // Using the geocoder to get the LatLng. Keeping in mind, the current string address may be nothing...
         LatLng currentLatLngAddress = buttonDecision(buttonCode, appCont);
-
+        mMap.clear();
         // Add a marker at your location and move the camera to that location
         mMap
             .addMarker(new MarkerOptions()
@@ -131,7 +140,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             return currentLatLngAddress;
         } else { // buttonCode == 'G'
             // Pass to GPS function
-            LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
+            LatLng currentLatLngAddress = getCoordinatesFromGPS();
             return currentLatLngAddress;
         }
     }
@@ -197,27 +206,27 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     // Implementing a location listener that will listen for location changes
-    private LocationListener listener = new LocationListener() {
-        public void onLocationChanged(Location location) {
+    //private LocationListener listener = new LocationListener() {
+    @Override
+        public void onLocationChanged(Location myLocation) {
             // Called when a new location is found by the network location provider.
-            Context appContext = getApplicationContext();
-            LatLng currentLatLngAddress = getCoordinatesFromGPS(appContext);
-            System.out.print(currentLatLngAddress);
+            myLocation = gpsLocation;
         }
 
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
+        //public void onStatusChanged(String provider, int status, Bundle extras) {
+        //}
 
-        public void onProviderEnabled(String provider) {
-        }
+        //public void onProviderEnabled(String provider) {
+        //}
 
-        public void onProviderDisabled(String provider) {
-        }
-    };
+        //public void onProviderDisabled(String provider) {
+        //}
+    //};
 
-    public LatLng getCoordinatesFromGPS(Context appCont) {
+    public LatLng getCoordinatesFromGPS() {
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        return new LatLng(gpsLocation.getLatitude(), gpsLocation.getLongitude());
+        /*LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
         try {
 
@@ -246,9 +255,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
         LatLng sydney = new LatLng(0, 0);
         return sydney;
+    }*/
     }
 
-    private final int LOCATION_PERMISSION_CODE = 12;
+    final int LOCATION_PERMISSION_CODE = 12;
     private boolean checkFineLocationPermission(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -315,18 +325,38 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         return true;
     }
 
-    protected synchronized void buildGoogleApiClient(Context appCont) {
-        GoogleApiClient locationClient = new GoogleApiClient.Builder(this)
+    protected synchronized void buildGoogleApiClient() {
+        locationClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .build();
         locationClient.connect();
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(locationClient, locationRequest, this);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {}
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+
 
     private void getRestrooms(LatLng currentLocation){
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < params.length; i++)
         {
-            URL queryURL = createQueryURL(currentLocation, i);
+            String queryURL = createQueryURL(currentLocation, i);
             Object[] shuttleData = new Object[2];
             shuttleData[0] = mMap;
             shuttleData[1] = queryURL;
@@ -335,32 +365,18 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
+    final String DEFAULT = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE&radius=3000&location=40.741895,-73.989308&keyword=cafe";
     final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    final String KEY = "AIzaSyBwLxJ4tll-EQioZgPqw_1WUzyBAlFpPq8";
-    final String RADIUS = "3000"; // in meters
+    final String KEY = "AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE";
+    final String RADIUS = "2000"; // in meters
     final String[] params = {"cafe" , "gas_station" , "shopping_mall" , "department_store"};
-    private URL createQueryURL(LatLng currentLocation, int i){
+    private String createQueryURL(LatLng currentLocation, int i){
 
-            Uri builtUri = Uri.parse(BASE_URL);
             String lat = Double.toString(currentLocation.latitude);
             String lng = Double.toString(currentLocation.longitude);
             final String latLngString = lat + "," + lng;
-            builtUri.buildUpon()
-                .appendQueryParameter("key", KEY)
-                .appendQueryParameter("radius", RADIUS)
-                .appendQueryParameter("location", latLngString)
-                .appendQueryParameter("keyword", params[i])
-                .build();
-        try{
-            java.net.URL returnURL = new URL(builtUri.toString());
-            return returnURL;
-        }
-        catch (MalformedURLException except)
-        {
-            except.printStackTrace();
-        }
-        // Must return here
-        return null;
+            String requestURL = BASE_URL + "key=" + KEY + "&location=" + latLngString + "&keyword=" + params[i] + "&rankby=distance";
+            return requestURL;
     }
 }
 
