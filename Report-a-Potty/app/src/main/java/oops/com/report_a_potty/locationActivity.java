@@ -13,10 +13,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
-//import android.location.LocationListener;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.net.Uri;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,26 +29,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import android.location.Geocoder;
 import android.support.v7.app.AlertDialog;
 
-import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.List;
 import java.util.Locale;
-import java.net.URL;
-import java.net.URLConnection;
 
-import static android.os.Build.VERSION.SDK_INT;
+
 
 public class locationActivity extends FragmentActivity implements OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener,
-        LocationListener
+    LocationListener
 {
 
     private GoogleMap mMap;
@@ -210,18 +201,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     @Override
         public void onLocationChanged(Location myLocation) {
             // Called when a new location is found by the network location provider.
-            myLocation = gpsLocation;
+            gpsLocation = myLocation;
         }
-
-        //public void onStatusChanged(String provider, int status, Bundle extras) {
-        //}
-
-        //public void onProviderEnabled(String provider) {
-        //}
-
-        //public void onProviderDisabled(String provider) {
-        //}
-    //};
 
     public LatLng getCoordinatesFromGPS() {
 
