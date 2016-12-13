@@ -326,7 +326,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     private void getRestrooms(LatLng currentLocation){
         for (int i = 0; i < 4; i++)
         {
-            URL queryURL = createQueryURL(currentLocation, i);
+            String queryURL = createQueryURL(currentLocation, i);
             Object[] shuttleData = new Object[2];
             shuttleData[0] = mMap;
             shuttleData[1] = queryURL;
@@ -335,11 +335,14 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
+    final String DEFAULT = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE&radius=3000&location=40.741895,-73.989308&keyword=cafe";
     final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    final String KEY = "AIzaSyBwLxJ4tll-EQioZgPqw_1WUzyBAlFpPq8";
+    //final String KEY = "AIzaSyBwLxJ4tll-EQioZgPqw_1WUzyBAlFpPq8";
+    //final String KEY = "AIzaSyBGuwHboEEhA1SJyb5ynaO7dUxdW9D8bMw";
+    final String KEY = "AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE";
     final String RADIUS = "3000"; // in meters
     final String[] params = {"cafe" , "gas_station" , "shopping_mall" , "department_store"};
-    private URL createQueryURL(LatLng currentLocation, int i){
+    private String createQueryURL(LatLng currentLocation, int i){
 
             Uri builtUri = Uri.parse(BASE_URL);
             String lat = Double.toString(currentLocation.latitude);
@@ -351,16 +354,16 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .appendQueryParameter("location", latLngString)
                 .appendQueryParameter("keyword", params[i])
                 .build();
-        try{
-            java.net.URL returnURL = new URL(builtUri.toString());
-            return returnURL;
-        }
-        catch (MalformedURLException except)
-        {
-            except.printStackTrace();
-        }
+        //try{
+            String returnURL = new String(builtUri.toString());
+            return DEFAULT;
+        //}
+        //catch (MalformedURLException except)
+        //{
+        //    except.printStackTrace();
+        //}
         // Must return here
-        return null;
+        //return null;
     }
 }
 

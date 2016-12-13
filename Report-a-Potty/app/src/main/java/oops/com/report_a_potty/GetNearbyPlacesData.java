@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Vijay Thakkar on 11-Dec-16.
  */
 
-public class GetNearbyPlacesData extends AsyncTask {
+public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
     String placesData;
     GoogleMap mMap;
     String endpointURL;
@@ -29,13 +29,14 @@ public class GetNearbyPlacesData extends AsyncTask {
             downloadURL downloadUrl = new downloadURL();
             placesData = downloadUrl.readURL(endpointURL);
             Log.d("GooglePlacesReadTask", "doInBackground Exit");
+            //onPostExecute(placesData);
         } catch (Exception except) {
             Log.d("GooglePlacesReadTask", except.toString());
         }
         return placesData;
     }
 
-
+    @Override
     protected void onPostExecute(String placesData) {
         Log.d("GooglePlacesReadTask", "onPostExecute Entered");
         List<HashMap<String, String>> nearbyPlacesList = null;
