@@ -49,36 +49,41 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
     }
 
     private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
-        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+
+        if (nearbyPlacesList.size() != 0)
+        {
+            int counter = 0;
+            //for (int i = 0; i < nearbyPlacesList.size(); i++) {
             Log.d("onPostExecute","Entered into showing locations");
-            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+            while (counter < 7 || counter < nearbyPlacesList.size())  {
+                HashMap<String, String> googlePlace = nearbyPlacesList.get(counter);
 
-            // first convert the string LatLng to doubles
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
+                // first convert the string LatLng to doubles
+                double lat = Double.parseDouble(googlePlace.get("lat"));
+                double lng = Double.parseDouble(googlePlace.get("lng"));
 
-            // place name will be the title of the marker
-            String placeName = googlePlace.get("place_name");
+                // place name will be the title of the marker
+                String placeName = googlePlace.get("place_name");
 
-            // place address is vicinity
-            String vicinity = googlePlace.get("vicinity");
+                // place address is vicinity
+                String vicinity = googlePlace.get("vicinity");
 
-            // and the latitude and the loongitude
-            LatLng latLng = new LatLng(lat, lng);
+                // and the latitude and the loongitude
+                LatLng latLng = new LatLng(lat, lng);
 
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(placeName)
+                        .snippet(vicinity)
+                        .visible(true));
 
-            // now we have the data of a lot of difference places of this type
-            // all we need to do is to store it
-            // churn it through the algorithm we  make
-            // and then display the first n results of that list of nearby locations
-            // for example, we could just do
-            //mMap.addMarker(markerOptions); here
-
-            mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(placeName)
-                    .snippet(vicinity)
-                    .visible(true));
+                counter++;
+            }
+        }
+        else
+        {
+            Log.d("onPostExecute: ","No markers to show");
+            return;
         }
     }
 }

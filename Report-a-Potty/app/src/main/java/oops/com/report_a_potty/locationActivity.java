@@ -46,7 +46,11 @@ import java.net.URLConnection;
 
 import static android.os.Build.VERSION.SDK_INT;
 
-public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class locationActivity extends FragmentActivity implements OnMapReadyCallback
+    //GoogleApiClient.ConnectionCallbacks,
+    //GoogleApiClient.OnConnectionFailedListener,
+    //LocationListener
+{
 
     private GoogleMap mMap;
 
@@ -324,7 +328,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
 
     private void getRestrooms(LatLng currentLocation){
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < params.length; i++)
         {
             String queryURL = createQueryURL(currentLocation, i);
             Object[] shuttleData = new Object[2];
@@ -337,33 +341,16 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
     final String DEFAULT = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE&radius=3000&location=40.741895,-73.989308&keyword=cafe";
     final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    //final String KEY = "AIzaSyBwLxJ4tll-EQioZgPqw_1WUzyBAlFpPq8";
-    //final String KEY = "AIzaSyBGuwHboEEhA1SJyb5ynaO7dUxdW9D8bMw";
     final String KEY = "AIzaSyBDvMHTsnOQ6tFA3IVJ10goE9NpSCivpgE";
-    final String RADIUS = "3000"; // in meters
+    final String RADIUS = "2000"; // in meters
     final String[] params = {"cafe" , "gas_station" , "shopping_mall" , "department_store"};
     private String createQueryURL(LatLng currentLocation, int i){
 
-            Uri builtUri = Uri.parse(BASE_URL);
             String lat = Double.toString(currentLocation.latitude);
             String lng = Double.toString(currentLocation.longitude);
             final String latLngString = lat + "," + lng;
-            builtUri.buildUpon()
-                .appendQueryParameter("key", KEY)
-                .appendQueryParameter("radius", RADIUS)
-                .appendQueryParameter("location", latLngString)
-                .appendQueryParameter("keyword", params[i])
-                .build();
-        //try{
-            String returnURL = new String(builtUri.toString());
-            return DEFAULT;
-        //}
-        //catch (MalformedURLException except)
-        //{
-        //    except.printStackTrace();
-        //}
-        // Must return here
-        //return null;
+            String requestURL = BASE_URL + "key=" + KEY + "&radius=" + RADIUS + "&location=" + latLngString + "&keyword=" + params[i];
+            return requestURL;
     }
 }
 
