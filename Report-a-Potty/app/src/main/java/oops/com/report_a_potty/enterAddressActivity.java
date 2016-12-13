@@ -2,7 +2,6 @@ package oops.com.report_a_potty;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.content.Intent;

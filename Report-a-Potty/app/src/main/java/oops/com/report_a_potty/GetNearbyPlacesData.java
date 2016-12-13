@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -27,6 +26,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
             mMap = (GoogleMap) params[0];
             endpointURL = (String) params[1];
             downloadURL downloadUrl = new downloadURL();
+            placesData = "";
             placesData = downloadUrl.readURL(endpointURL);
             Log.d("GooglePlacesReadTask", "doInBackground Exit");
             //onPostExecute(placesData);
