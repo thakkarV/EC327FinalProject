@@ -20,4 +20,6 @@ Example calls to "Enter Address":
   Orange Street, Malden
   
 The app will first zoom into the user's location, and then will display places closest to the user that have a high
-probability of containing a public restroom. These will include gas stations, cafes, shopping malls, and department stores. The user may press the back button on the device to reenter the location via a string address or switch to GPS location.
+probability of containing a public restroom. These will include gas stations, cafes, shopping malls, and department stores. The user may press the back button on the device to reenter the location via a string address or switch to GPS location. When the back button is pressed once, the map resets to its original position if the user has moved it. The second time it is pressed, it returns to the previous activity. When another address is received after the back button is pressed, the map will clear the results from the previous search, thus only showing the results of the current search.
+
+Extensive permissions checking for GPS services, location services, and Google Play services is built into the app. The first time the app is launched on a device, a dialog box will appear asking for the user's permission to use such services if they are not enabled. The app will not ask for permission on the following launches once they have been granted once.
