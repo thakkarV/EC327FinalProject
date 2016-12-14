@@ -5,7 +5,9 @@ Rachel Manzelli, Vijay Thakkar, Alecia Griffin, Peter Jang
 Designed for API 25 (Android Nougat 7.2), runs on API 23 (Android Marshmallow 6.0) at minimum.
 
 Report-a-Potty is a map-based public restroom finder. Upon starting the app, the user has the ability to select 
-"Find Restrooms Near Me", which will use the device's location services to pinpoint their current location. Alternatively, the user may choose "Enter Address", allowing them to enter a specific address. The device will then use the Android Geocoder utility to convert the address into latitude and longitude coordinates. The reason for adding the capability of keying in any location manually is to address the issue of limited GPS reception in vertical cities (like New York) or to allow the user to plan ahead in case they are planning to travel to a place with limited GPS and internet availability. 
+"Find Restrooms Near Me", which will use the device's location services to pinpoint their current location. ( NOTE: THE GPS FUNCTIONALITY DOES NOT WORK YET AND WILL MAKE THE APP CRASH. However, the overall funciton of the app is stil fine as the user can still input a string address manually and search for restrooms nearby.)
+
+Alternatively, the user may choose "Enter Address", allowing them to enter a specific address. The device will then use the Android Geocoder utility to convert the address into latitude and longitude coordinates. The reason for adding the capability of keying in any location manually is to address the issue of limited GPS reception in vertical cities (like New York) or to allow the user to plan ahead in case they are planning to travel to a place with limited GPS and internet availability. 
 
 To achieve the best results, the user should enter a specific location containing a street, city, and state. More generic locations can also be entered, such as a street in a town, or a locale. Zip code is not required, but will also function. A country name may be required in case of requesting locations outside of the US. 
 
